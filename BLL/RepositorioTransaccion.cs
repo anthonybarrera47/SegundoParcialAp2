@@ -54,7 +54,7 @@ namespace BLL
             Contexto db = new Contexto();
             try
             {
-                Lista = db.Set<Transacciones>().AsNoTracking().Where(expression).ToList();
+                Lista = db.Transacciones.Where(expression).ToList();
                 if (Lista != null)
                 {
                     foreach (var item in Lista)

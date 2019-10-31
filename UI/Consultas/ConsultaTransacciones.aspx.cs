@@ -1,6 +1,8 @@
 ﻿using BLL;
 using Entidades;
 using Extensores;
+using Herramientas;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +48,7 @@ namespace SegundoParcialAp2.UI.Consultas
             DateTime fechaDesde = FechaDesdeTextBox.Text.ToDatetime();
             DateTime FechaHasta = FechaHastaTextBox.Text.ToDatetime();
             if (FechaCheckBox.Checked)
-                lista = repositorio.GetList(filtro).Where(x => x.Fecha >= fechaDesde && x.Fecha <= FechaHasta).ToList();
+                lista = repositorio.GetList(filtro).Where(x => x.Fecha.Date >= fechaDesde && x.Fecha.Date <= FechaHasta).ToList();
             else
                 lista = repositorio.GetList(filtro);
             repositorio.Dispose();
@@ -65,11 +67,13 @@ namespace SegundoParcialAp2.UI.Consultas
             GridViewRow row = (sender as Button).NamingContainer as GridViewRow;
             int Transaccion = lista.ElementAt(row.RowIndex).TransaccionId;
             Transacciones transaccion = repositorio.Buscar(Transaccion);
-            Clientes clientes = repositorioClientes.Buscar(transaccion.ClienteID);
+
+            List<Clientes> ItemClientes = new List<Clientes>();
             List<Transacciones> Itemtransacciones = new List<Transacciones>();
             List<TransaccionDetalle> DetalleTransaccion = new List<TransaccionDetalle>();
+            ItemClientes.Add(repositorioClientes.Buscar(transaccion.ClienteID));
             Itemtransacciones.Add(transaccion);
-            decimal BalanceOriginal = clientes.BalanceOriginal;
+            decimal Balance = 0;
             foreach(var item in transaccion.Detalle)
             {
                 TransaccionDetalle details = new TransaccionDetalle();
@@ -78,19 +82,36 @@ namespace SegundoParcialAp2.UI.Consultas
                 {
                     details.DetalleId = item.DetalleId;
                     details.TipoTransaccion = item.TipoTransaccion;
+                    details.Tipo = "Venta";
                     details.Suma = item.Monto;
                     details.Resta = 0;
-                    details.Balance = details.Suma - details.Resta;
+                    Balance += item.Monto;
+                    details.Balance = Balance;
                 }else if (item.TipoTransaccion == TipoTransaccion.Pago)
                 {
                     details.DetalleId = item.DetalleId;
                     details.TipoTransaccion = item.TipoTransaccion;
+                    details.Tipo = "Pago";
                     details.Suma = 0;
                     details.Resta = item.Monto;
-                    details.Balance = details.Suma - details.Resta;
+                    Balance -= item.Monto;
+                    details.Balance = Balance;
                 }
                 DetalleTransaccion.Add(details);
             }
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", $"ShowReporte('Recibo de estudiante');", true);
+            ReportViewer.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+            ReportViewer.Reset();
+            ReportViewer.LocalReport.ReportPath = Server.MapPath(@"~\UI\Reporte\ListadoEstadoCuentasClientes.rdlc");
+            ReportViewer.LocalReport.DataSources.Clear();
+            ReportViewer.LocalReport.DataSources.Add(new ReportDataSource("Clientes",
+                                                   ItemClientes));
+
+            ReportViewer.LocalReport.DataSources.Add(new ReportDataSource("Detalle",
+                                                   DetalleTransaccion));
+            ReportViewer.LocalReport.DataSources.Add(new ReportDataSource("Transacciones",
+                                                   Itemtransacciones));
+            ReportViewer.LocalReport.Refresh();
         }
     }
 }
