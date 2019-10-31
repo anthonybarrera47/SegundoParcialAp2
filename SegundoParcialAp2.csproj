@@ -91,6 +91,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\sweetalert2.all.min.js" />
+    <Content Include="UI\Consultas\ConsultaTransacciones.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -105,12 +106,24 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SegundoParcialDbDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SegundoParcialDbDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Consultas\ConsultaTransacciones.aspx.cs">
+      <DependentUpon>ConsultaTransacciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Consultas\ConsultaTransacciones.aspx.designer.cs">
+      <DependentUpon>ConsultaTransacciones.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +140,17 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="SegundoParcialDbDataSet.xsc">
+      <DependentUpon>SegundoParcialDbDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="SegundoParcialDbDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SegundoParcialDbDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="SegundoParcialDbDataSet.xss">
+      <DependentUpon>SegundoParcialDbDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -137,8 +161,24 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="UI\Consultas\" />
     <Folder Include="UI\Registros\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{1369629D-8AD0-4732-B3DE-0B0B9C78ED3B}</Project>
+      <Name>Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="BLL\BLL.csproj">
+      <Project>{9A9647C2-46DF-4A09-ACD3-CC3578E20094}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="Herramientas\Herramientas.csproj">
+      <Project>{2DB5BA5D-E613-4817-A341-A9225734BE3E}</Project>
+      <Name>Herramientas</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Reporte\ListadoEstadoCuentasClientes.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

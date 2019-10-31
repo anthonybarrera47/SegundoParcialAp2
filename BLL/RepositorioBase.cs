@@ -1,10 +1,10 @@
-﻿using DAL;
+﻿
+
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -35,7 +35,7 @@ namespace BLL
 
         public void Dispose()
         {
-            
+
         }
 
         public virtual bool Eliminar(int id)

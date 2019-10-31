@@ -72,8 +72,7 @@
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Consultas
                             </a>
                             <div class="dropdown-menu" aria-labelledby="ConsultasNavbarDropDown">
-                                <a class="dropdown-item" runat="server" href="#">Consulta</a>
-
+                                <a class="dropdown-item" runat="server" href="UI/Consultas/ConsultaTransacciones.aspx">Consulta de transacciones</a> 
                             </div>
                         </li>
                     </ul>
